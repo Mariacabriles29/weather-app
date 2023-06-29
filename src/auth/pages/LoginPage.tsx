@@ -18,7 +18,6 @@ import Img from "../../resources/img/home.jpg";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UserActionTypes } from "../../helpers/userTypes";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 export const LoginPage = () => {
@@ -38,6 +37,7 @@ export const LoginPage = () => {
         `${u.password}`.toLowerCase() === password.toLowerCase()
     );
     console.log(user);
+
     if (user) {
       dispatch({
         type: UserActionTypes.CHECK_LOGIN,
@@ -66,8 +66,7 @@ export const LoginPage = () => {
         theme: "light",
       });
     }
-
-    // console.log(users);
+    console.log(users);
   };
 
   const handleUserName = (e: any) => {

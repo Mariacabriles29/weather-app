@@ -3,8 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage } from "../auth/pages/LoginPage";
 import { RegisterPage } from "../auth/pages/RegisterPage";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { UserActionTypes } from "../helpers/userTypes";
+
 import { getUsers } from "../store/acctions/userActions";
 import { Weather } from "../components/Weather";
 
@@ -34,10 +33,11 @@ export const AppRouter = () => {
           </>
         ) : (
           <Route path="login" element={<LoginPage />} />
+          
         )}
 
-        <Route path="register" element={<RegisterPage />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
+         <Route path="register" element={<RegisterPage/>} />        
+         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );

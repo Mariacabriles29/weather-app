@@ -1,15 +1,17 @@
 import { createStore, applyMiddleware, combineReducers } from "redux";
-import thunk from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
 import weatherReducer from "./reducers/weatherReducer";
 import userReducer from "./reducers/userReducer";
+import thunkMiddleware from "redux-thunk";
 
-// Combine os redutores específicos da sua aplicação
 const rootReducer = combineReducers({
   weather: weatherReducer,
   users: userReducer,
 });
 
-// Crie a loja Redux com os redutores combinados e o middleware Redux Thunk
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunkMiddleware))
+);
 
 export default store;

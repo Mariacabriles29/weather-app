@@ -12,17 +12,58 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Img from "../../resources/img/register.jpg.jpg";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserActionTypes } from "../../helpers/userTypes";
+import { useDispatch, useSelector } from "react-redux";
 // import { Link } from "@mui/icons-material";
 
-const defaultTheme = createTheme();
-const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
-};
 export const RegisterPage = () => {
+  const defaultTheme = createTheme();
   const [userName, setUserName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const users = useSelector((state: any) => state.users.users);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    setFormSubmitted(true);
+
+    // Construir el objeto de usuario
+    const newUser = {
+      name: userName,
+      email: userEmail,
+      password: userPassword,
+      avatar: "https://api.lorem.space/image/face?w=640&h=480&r=867",
+    };
+
+    try {
+      // Realizar la solicitud POST con Axios
+      const response = await axios.post(
+        "https://api.escuelajs.co/api/v1/users",
+        newUser
+      );
+
+      // Verificar si la solicitud fue exitosa
+      if (response.status === 201) {
+        // Llamar a la acción de registro del usuario usando Redux
+        dispatch({
+          payload: newUser,
+          type: UserActionTypes.GET_USERS_SUCCESS,
+        });
+        navigate("/login");
+        console.log("El usuario fue creado correctamente");
+      } else {
+        console.log("Error en la solicitud de registro");
+      }
+    } catch (error) {
+      console.log("Error en la solicitud de registro", error);
+    }
+    console.log(newUser);
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -45,7 +86,7 @@ export const RegisterPage = () => {
                 width: "500px",
                 height: "auto",
                 alignItems: "center",
-                backgroundColor: "rgb(15, 98, 254)",
+                backgroundColor: "rgb(0 228 201)",
                 padding: "30px",
                 borderRadius: "5px",
               }}
