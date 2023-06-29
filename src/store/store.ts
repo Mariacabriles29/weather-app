@@ -6,7 +6,7 @@ import userReducer from "./reducers/userReducer";
 // Combine os redutores específicos da sua aplicação
 const rootReducer = combineReducers({
   weather: weatherReducer,
-  user: userReducer,
+  users: userReducer,
 });
 
 // Crie a loja Redux com os redutores combinados e o middleware Redux Thunk

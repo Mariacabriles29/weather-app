@@ -13,23 +13,23 @@ export interface UserState {
 }
 
 export enum UserActionTypes {
-  FETCH_USERS_REQUEST = "FETCH_FORECAST_REQUEST",
-  FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS",
-  FETCH_USERS_FAILURE = "FETCH_USERS_FAILURE",
+  GET_USERS_REQUEST = "GET_USERS_REQUEST",
+  GET_USERS_SUCCESS = "GET_USERS_SUCCESS",
+  GET_USERS_FAILURE = "GET_USERS_FAILURE",
   CHECK_LOGIN = "CHECK_LOGIN",
 }
 
-interface FetchUsersRequestAction {
-  type: UserActionTypes.FETCH_USERS_REQUEST;
+interface GetUsersRequestAction {
+  type: UserActionTypes.GET_USERS_REQUEST;
 }
 
-interface FetchUsersSuccessAction {
-  type: UserActionTypes.FETCH_USERS_SUCCESS;
+interface GetUsersSuccessAction {
+  type: UserActionTypes.GET_USERS_SUCCESS;
   payload: User[];
 }
 
-interface FetchUsersFailureAction {
-  type: UserActionTypes.FETCH_USERS_FAILURE;
+interface GetUsersFailureAction {
+  type: UserActionTypes.GET_USERS_FAILURE;
   payload: string;
 }
 interface CHECK_LOGIN {
@@ -38,7 +38,7 @@ interface CHECK_LOGIN {
 }
 
 export type UserAction =
-  | FetchUsersRequestAction
-  | FetchUsersSuccessAction
-  | FetchUsersFailureAction
+  | GetUsersRequestAction
+  | GetUsersSuccessAction
+  | GetUsersFailureAction
   | CHECK_LOGIN;

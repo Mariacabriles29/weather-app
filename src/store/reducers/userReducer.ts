@@ -13,24 +13,21 @@ export const initialState: UserState = {
 
 const userReducer = (state = initialState, action: UserAction): UserState => {
   switch (action.type) {
-    case UserActionTypes.FETCH_USERS_REQUEST:
+    case UserActionTypes.GET_USERS_REQUEST:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case UserActionTypes.FETCH_USERS_SUCCESS:
-      const newState = {
+    case UserActionTypes.GET_USERS_SUCCESS:
+      return {
         ...state,
         users: action.payload,
         loading: false,
         error: null,
       };
-      localStorage.setItem("users", JSON.stringify(newState));
-      return {
-        ...newState,
-      };
-    case UserActionTypes.FETCH_USERS_FAILURE:
+
+    case UserActionTypes.GET_USERS_FAILURE:
       return {
         ...state,
         loading: false,

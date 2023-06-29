@@ -1,5 +1,4 @@
 export interface Weather {
-  /*ojo esto debo cambiarlo  */
   weather: [];
   forecast: string;
   loading: false;

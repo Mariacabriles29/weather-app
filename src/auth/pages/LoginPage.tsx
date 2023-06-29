@@ -16,13 +16,58 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Img from "../../resources/img/home.jpg";
 
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { UserActionTypes } from "../../helpers/userTypes";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 export const LoginPage = () => {
   const defaultTheme = createTheme();
+  const users = useSelector((state: any) => state.users.users);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const user = users.find(
+      (u: any) =>
+        `${u.email}`.toLowerCase() === username.toLowerCase() &&
+        `${u.password}`.toLowerCase() === password.toLowerCase()
+    );
+    console.log(user);
+    if (user) {
+      dispatch({
+        type: UserActionTypes.CHECK_LOGIN,
+        payload: user,
+      });
+      navigate("/weather");
+      toast.success("Inicio exitoso", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      toast.error("Error al iniciar", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    // console.log(users);
   };
 
   const handleUserName = (e: any) => {
@@ -50,7 +95,6 @@ export const LoginPage = () => {
             src={Img}
             alt="login"
             style={{ width: "100%", height: "auto" }}
-            // height={"100%"}
           />
         </Grid>
         <Grid item xs={6} sm={8} md={5} component={Paper} elevation={6} square>
@@ -75,8 +119,7 @@ export const LoginPage = () => {
                 alignItems: "center",
                 backgroundColor: "rgb(15, 98, 254)",
                 padding: "36px",
-                clipPath:
-                  "polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)",
+                borderRadius: "5px",
               }}
             >
               <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
@@ -122,8 +165,8 @@ export const LoginPage = () => {
                 />
 
                 <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
+                  control={<Checkbox value="remember" color="secondary" />}
+                  label="Recordarme"
                 />
                 <Button
                   type="submit"
@@ -150,7 +193,7 @@ export const LoginPage = () => {
                       className="link"
                       style={{ color: "white", marginRight: "2rem" }}
                     >
-                      {"Ya tienes cuenta? Registrate"}
+                      {"No tienes cuenta? Registrate"}
                     </Link>
                   </Grid>
                 </Grid>
@@ -158,6 +201,18 @@ export const LoginPage = () => {
             </Box>
           </Box>
         </Grid>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
       </Grid>
     </ThemeProvider>
   );

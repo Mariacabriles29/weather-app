@@ -1,22 +1,22 @@
 import { ThunkDispatch } from "redux-thunk";
-import { User, UserAction, UserActionTypes } from "../../helpers/userTypes";
+import { UserAction, UserActionTypes } from "../../helpers/userTypes";
+import axios from "axios";
 
-export const fetchUsers = () => {
+export const getUsers = () => {
   return async (dispatch: ThunkDispatch<{}, void, UserAction>) => {
-    dispatch({ type: UserActionTypes.FETCH_USERS_REQUEST });
+    dispatch({ type: UserActionTypes.GET_USERS_REQUEST });
 
     try {
       // Simulación de una llamada a una API con datos de usuarios
-      const response = await fetch("https://api.example.com/users");
-      const users: User[] = await response.json();
+      const response = await axios.get("https://api.escuelajs.co/api/v1/users");
 
       dispatch({
-        type: UserActionTypes.FETCH_USERS_SUCCESS,
-        payload: users,
+        type: UserActionTypes.GET_USERS_SUCCESS,
+        payload: response.data,
       });
     } catch (error: any) {
       dispatch({
-        type: UserActionTypes.FETCH_USERS_FAILURE,
+        type: UserActionTypes.GET_USERS_FAILURE,
         payload: error.message,
       });
     }
