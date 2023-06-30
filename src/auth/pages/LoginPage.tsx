@@ -36,14 +36,8 @@ export const LoginPage = () => {
         `${u.email}`.toLowerCase() === username.toLowerCase() &&
         `${u.password}`.toLowerCase() === password.toLowerCase()
     );
-    console.log(user);
 
     if (user) {
-      dispatch({
-        type: UserActionTypes.CHECK_LOGIN,
-        payload: user,
-      });
-      navigate("/weather");
       toast.success("Inicio exitoso", {
         position: "top-right",
         autoClose: 5000,
@@ -53,6 +47,11 @@ export const LoginPage = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
+      });
+      navigate("/weather");
+      dispatch({
+        type: UserActionTypes.CHECK_LOGIN,
+        payload: user,
       });
     } else {
       toast.error("Error al iniciar", {
@@ -82,11 +81,9 @@ export const LoginPage = () => {
       <Grid container sx={{ minHeight: "100vh", overflow: "hidden" }}>
         <Grid
           item
-          xs={false}
-          sm={4}
-          md={7}
+          md={6}
           sx={{
-            display: "flex",
+            display: { xs: "none", md: "flex" },
             justifyContent: "flex-start",
           }}
         >
@@ -96,11 +93,9 @@ export const LoginPage = () => {
             style={{ width: "100%", height: "auto" }}
           />
         </Grid>
-        <Grid item xs={6} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid item xs={12} md={6} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
-              mx: 4,
               display: "flex",
               justifyContent: "center",
               flexDirection: "column",

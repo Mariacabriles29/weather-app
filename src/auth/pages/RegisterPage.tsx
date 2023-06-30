@@ -68,7 +68,7 @@ export const RegisterPage = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Grid container spacing={2} sx={{ height: "100vh", overflow: "hidden" }}>
-        <Grid item xs={6} md={6}>
+        <Grid item xs={12} md={6}>
           <CssBaseline />
           <Box
             sx={{
@@ -189,9 +189,11 @@ export const RegisterPage = () => {
 
         <Grid
           item
-          xs={6}
           md={6}
-          sx={{ display: "flex", justifyContent: "flex-end" }}
+          sx={{
+            display: { xs: "none", md: "flex" },
+            justifyContent: "flex-end",
+          }}
         >
           <img
             src={Img}
