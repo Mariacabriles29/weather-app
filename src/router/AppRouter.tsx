@@ -5,7 +5,7 @@ import { RegisterPage } from "../auth/pages/RegisterPage";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getUsers } from "../store/acctions/userActions";
-import { Weather } from "../components/Weather";
+import { Weather } from "../components/weather/Weather";
 
 export const AppRouter = () => {
   const users = useSelector((state: any) => state.users);
@@ -33,11 +33,10 @@ export const AppRouter = () => {
           </>
         ) : (
           <Route path="login" element={<LoginPage />} />
-          
         )}
 
-         <Route path="register" element={<RegisterPage/>} />        
-         <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="register" element={<RegisterPage />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );
