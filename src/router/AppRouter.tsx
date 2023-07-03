@@ -5,7 +5,7 @@ import { RegisterPage } from "../auth/pages/RegisterPage";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getUsers } from "../store/acctions/userActions";
-import { Weather } from "../components/weather/Weather";
+import { WeatherPanel } from "../components/weather/WeatherPanel";
 
 export const AppRouter = () => {
   const users = useSelector((state: any) => state.users);
@@ -29,7 +29,7 @@ export const AppRouter = () => {
       <Routes>
         {users.currentUser ? (
           <>
-            <Route path="weather" element={<Weather />} />
+            <Route path="weather" element={<WeatherPanel />} />
           </>
         ) : (
           <Route path="login" element={<LoginPage />} />

@@ -5,7 +5,7 @@ import {
 } from "../../helpers/weatherTypes";
 
 const initialState = {
-  weathers: [],
+  currentWeather: [],
 };
 
 const weatherReducer = (
@@ -13,10 +13,10 @@ const weatherReducer = (
   action: WeatherAction
 ): WeatherState => {
   switch (action.type) {
-    case WeatherActionTypes.ADD_WEATHER:
+    case WeatherActionTypes.CURRENT_WEATHER:
       const newWeather = {
         ...state,
-        weathers: action.payload,
+        currentWeather: action.payload,
       };
 
       return {

@@ -65,7 +65,6 @@ export const LoginPage = () => {
         theme: "light",
       });
     }
-    console.log(users);
   };
 
   const handleUserName = (e: any) => {

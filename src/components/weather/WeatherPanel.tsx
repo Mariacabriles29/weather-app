@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Grid } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "@fontsource/roboto/300.css";
@@ -7,7 +7,25 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Header } from "../../layout/header/Header";
 import { DayInformationPanel } from "../dayInformation/DayInformationPanel";
-export const Weather = () => {
+import { useDispatch, useSelector } from "react-redux";
+import { getWeather } from "../../store/acctions/weatherAccions";
+
+export const WeatherPanel = () => {
+  const weather = useSelector((state: any) => {
+    return state.weather.currentWeather;
+  });
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getWeather() as any);
+  }, []);
+
+  useEffect(() => {
+    console.log(weather);
+  }, [weather]);
+
   return (
     <Box
       sx={{
@@ -18,7 +36,12 @@ export const Weather = () => {
       }}
     >
       <Header />
-      <DayInformationPanel />
+      <DayInformationPanel
+        currentWeather={weather}
+        handleSearchTerm={(search: string) => {
+          setSearchTerm(search);
+        }}
+      />
       <ToastContainer
         position="top-right"
         autoClose={5000}
