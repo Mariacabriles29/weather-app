@@ -8,16 +8,22 @@ import {
   IconButton,
   AppBar,
   Toolbar,
+  Grid,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sunny from "./Sunny";
 import SearchIcon from "@mui/icons-material/Search";
 import { WeatherData } from "../weather/weatherInfo";
 import Rain from "./Rain";
 import Cloudy from "./Cloudy";
+import { useDispatch, useSelector } from "react-redux";
+
+import { getForecast } from "../../store/acctions/forecastAccions";
+import { TodaysInformationPanel } from "../todaysforescat/TodaysInformationPanel";
+import moment from "moment";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -67,8 +73,20 @@ interface DayInformationPanelProps {
 }
 
 export const DayInformationPanel = (props: DayInformationPanelProps) => {
+  const ListForecast = useSelector((state: any) => {
+    return state.weather.currentWeather;
+  });
   const { currentWeather, handleSearchTerm } = props;
   const [searchTerm, setSearchTerm] = useState("");
+  const forecast = useSelector((state: any) => {
+    console.log("state", state);
+    return state.forecast.currentForecast;
+  });
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getForecast() as any);
+  }, []);
 
   const convertCelsius = () => {
     try {
@@ -81,24 +99,55 @@ export const DayInformationPanel = (props: DayInformationPanelProps) => {
     }
   };
   const checkWeather = () => {
-    if (currentWeather.weather[0]?.main.toLowerCase() === "rain") {
+    if (currentWeather.weather[0].main.toLowerCase() === "rain") {
       return <Rain width="200px" height="auto" />;
-    } else if (currentWeather.weather[0]?.main.toLowerCase() === "sunny") {
+    } else if (currentWeather.weather[0].main.toLowerCase() === "sunny") {
       return <Sunny width="200px" height="auto" />;
-    } else if (currentWeather.weather[0]?.main.toLowerCase() === "clouds") {
+    } else if (currentWeather.weather[0].main.toLowerCase() === "clouds") {
       return <Cloudy width="200px" height="auto" />;
     } else {
       return <Sunny width="200px" height="auto" />;
     }
   };
 
+  const getNewListForescast = () => {
+    const listForecast = [];
+
+    const currentDateTime = moment();
+    const currentTime = moment("2023-07-06 15:00:00");
+
+    if (currentTime.isSame(moment("15:00", "HH:mm"))) {
+      console.log("La hora actual es 15:00");
+    } else if (currentTime.isSame(moment("18:00", "HH:mm"))) {
+      console.log("La hora actual es 18:00");
+    } else if (currentTime.isSame(moment("21:00", "HH:mm"))) {
+      console.log("La hora actual es 21:00");
+    } else if (currentTime.isSame(moment("03:00", "HH:mm"))) {
+      console.log("La hora actual es 03:00");
+    } else if (currentTime.isSame(moment("06:00", "HH:mm"))) {
+      console.log("La hora actual es 06:00");
+    } else {
+      console.log("La hora actual es igual a la hora objetivo.");
+    }
+  };
+
+  getNewListForescast();
+
   return (
     <>
       {currentWeather.main === undefined && <>loading...</>}
       {currentWeather.main && (
-        <>
-          <Box>
-            <AppBar position="static">
+        <Grid container>
+          <Grid
+            item
+            xs={12}
+            md={12}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
+            <AppBar
+              position="static"
+              sx={{ width: "100%", borderRadius: "10px" }}
+            >
               <Toolbar>
                 <IconButton
                   size="large"
@@ -129,59 +178,104 @@ export const DayInformationPanel = (props: DayInformationPanelProps) => {
                 </Search>
               </Toolbar>
             </AppBar>
-          </Box>
-
-          <Box
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={12}
             sx={{
-              width: "100%",
               height: "100%",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
+              marginTop: "2rem",
             }}
           >
-            <Card sx={{ minWidth: "1000px" }} variant="outlined">
+            <Card sx={{ width: "100%" }} variant="outlined">
               <CardContent
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "flex-start",
-                    flexDirection: "column",
-                    height: "100%",
-                  }}
-                >
-                  <Typography variant="h2" fontWeight={"800"} gutterBottom>
-                    {currentWeather.name}
-                  </Typography>
-                  <Typography variant="h6" component="div"></Typography>
-                  {currentWeather.main.pressure}
-                  <Typography variant="h2" fontWeight={"800"}>
-                    {convertCelsius()}°
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "flex-start",
-                    flexDirection: "column",
-                    height: "100%",
-                  }}
-                >
-                  {checkWeather()}
-                </Box>
+                <Grid container>
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "flex-start",
+                      flexDirection: "column",
+                      height: "100%",
+                    }}
+                  >
+                    <Typography variant="h2" fontWeight={"800"} gutterBottom>
+                      {currentWeather.name}
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      component="div"
+                      mt={"-1.5rem"}
+                    ></Typography>
+                    change of rain {currentWeather.main.humidity} %
+                    <Typography variant="h2" fontWeight={"800"} mt={"2rem"}>
+                      {convertCelsius()}°
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "flex-start",
+                      flexDirection: "column",
+                      height: "100%",
+                    }}
+                  >
+                    {checkWeather()}
+                  </Grid>
+                </Grid>
               </CardContent>
             </Card>
-          </Box>
-        </>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={12}
+            sx={{
+              backgroundColor: "#eaecef",
+              width: "100%",
+              borderRadius: "10px",
+              height: "100%",
+              marginTop: "2rem",
+              display: "flex",
+            }}
+          >
+            {/* {[].map((d: any) => {
+              return <TodaysInformationPanel currentForecast={null} />;
+            })} */}
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={12}
+            sx={{
+              backgroundColor: "#eaecef",
+              width: "100%",
+              borderRadius: "10px",
+              height: "100%",
+              marginTop: "2rem",
+              display: "flex",
+            }}
+          >
+            kjhgf
+          </Grid>
+        </Grid>
       )}
     </>
   );

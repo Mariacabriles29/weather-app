@@ -49,7 +49,7 @@ export const Header = () => {
       </Box>
 
       <Button
-        sx={{ marginRight: "16px" }}
+        sx={{ marginRight: "16px", height: "50px" }}
         variant="contained"
         endIcon={<ExitToAppOutlined />}
         onClick={handleLogout}

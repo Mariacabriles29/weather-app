@@ -9,6 +9,7 @@ import { Header } from "../../layout/header/Header";
 import { DayInformationPanel } from "../dayInformation/DayInformationPanel";
 import { useDispatch, useSelector } from "react-redux";
 import { getWeather } from "../../store/acctions/weatherAccions";
+import { SliderPanel } from "../slider/SliderPanel";
 
 export const WeatherPanel = () => {
   const weather = useSelector((state: any) => {
@@ -36,12 +37,40 @@ export const WeatherPanel = () => {
       }}
     >
       <Header />
-      <DayInformationPanel
-        currentWeather={weather}
-        handleSearchTerm={(search: string) => {
-          setSearchTerm(search);
-        }}
-      />
+      <Grid container>
+        <Grid
+          item
+          xs={12}
+          md={3}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <SliderPanel />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <DayInformationPanel
+            currentWeather={weather}
+            handleSearchTerm={(search: string) => {
+              setSearchTerm(search);
+            }}
+          />
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+          md={3}
+          sx={{
+            backgroundColor: "#eaecef",
+            width: "100%",
+            borderRadius: "10px",
+          }}
+        ></Grid>
+      </Grid>
+
       <ToastContainer
         position="top-right"
         autoClose={5000}
