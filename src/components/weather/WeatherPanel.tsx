@@ -10,10 +10,17 @@ import { DayInformationPanel } from "../dayInformation/DayInformationPanel";
 import { useDispatch, useSelector } from "react-redux";
 import { getWeather } from "../../store/acctions/weatherAccions";
 import { SliderPanel } from "../slider/SliderPanel";
+import { DayForecastPanel } from "../dayforecast/DayForecastPanel";
+import { ForecastData, ListForecast } from "../todaysforescat/forecastInfo";
+import { getForecast } from "../../store/acctions/forecastAccions";
+import moment from "moment";
 
 export const WeatherPanel = () => {
   const weather = useSelector((state: any) => {
     return state.weather.currentWeather;
+  });
+  const ListForecast: ListForecast = useSelector((state: any) => {
+    return state.forecast.currentForecast;
   });
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -24,8 +31,23 @@ export const WeatherPanel = () => {
   }, []);
 
   useEffect(() => {
-    console.log(weather);
-  }, [weather]);
+    dispatch(getForecast() as any);
+  }, []);
+
+  const getNewListForecastDays = () => {
+    try {
+      const data = ListForecast.list.filter((we: ForecastData) => {
+        const currentTime = moment(we.dt_txt);
+        const hora = currentTime.format("HH:mm");
+        if (hora === "00:00") {
+          return we;
+        }
+      });
+      return data;
+    } catch (error) {
+      return [];
+    }
+  };
 
   return (
     <Box
@@ -68,7 +90,11 @@ export const WeatherPanel = () => {
             width: "100%",
             borderRadius: "10px",
           }}
-        ></Grid>
+        >
+          {getNewListForecastDays().map((we: ForecastData) => {
+            return <DayForecastPanel currentForecast={we} />;
+          })}
+        </Grid>
       </Grid>
 
       <ToastContainer

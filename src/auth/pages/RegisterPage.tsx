@@ -62,7 +62,6 @@ export const RegisterPage = () => {
     } catch (error) {
       console.log("Error en la solicitud de registro", error);
     }
-    console.log(newUser);
   };
 
   return (

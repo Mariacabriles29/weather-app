@@ -13,7 +13,6 @@ export const getForecast = () => {
       const response = await axios.get(
         "https://api.openweathermap.org/data/2.5/forecast?lat=44.34&lon=10.99&appid=6c04e8fdb17249c9081540db3e4210aa"
       );
-      console.log("datos", response);
       dispatch({
         type: ForecastActionTypes.CURRENT_FORECAST,
         payload: response.data,

@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getForecast } from "../../store/acctions/forecastAccions";
 import { TodaysInformationPanel } from "../todaysforescat/TodaysInformationPanel";
 import moment from "moment";
+import { ForecastData, ListForecast } from "../todaysforescat/forecastInfo";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -73,15 +74,11 @@ interface DayInformationPanelProps {
 }
 
 export const DayInformationPanel = (props: DayInformationPanelProps) => {
-  const ListForecast = useSelector((state: any) => {
-    return state.weather.currentWeather;
+  const ListForecast: ListForecast = useSelector((state: any) => {
+    return state.forecast.currentForecast;
   });
   const { currentWeather, handleSearchTerm } = props;
   const [searchTerm, setSearchTerm] = useState("");
-  const forecast = useSelector((state: any) => {
-    console.log("state", state);
-    return state.forecast.currentForecast;
-  });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -111,27 +108,52 @@ export const DayInformationPanel = (props: DayInformationPanelProps) => {
   };
 
   const getNewListForescast = () => {
-    const listForecast = [];
-
-    const currentDateTime = moment();
-    const currentTime = moment("2023-07-06 15:00:00");
-
-    if (currentTime.isSame(moment("15:00", "HH:mm"))) {
-      console.log("La hora actual es 15:00");
-    } else if (currentTime.isSame(moment("18:00", "HH:mm"))) {
-      console.log("La hora actual es 18:00");
-    } else if (currentTime.isSame(moment("21:00", "HH:mm"))) {
-      console.log("La hora actual es 21:00");
-    } else if (currentTime.isSame(moment("03:00", "HH:mm"))) {
-      console.log("La hora actual es 03:00");
-    } else if (currentTime.isSame(moment("06:00", "HH:mm"))) {
-      console.log("La hora actual es 06:00");
-    } else {
-      console.log("La hora actual es igual a la hora objetivo.");
+    try {
+      const data = ListForecast.list.filter((w: ForecastData) => {
+        const currentTime = moment(w.dt_txt);
+        if (currentTime.isSame(moment("15:00", "HH:mm"))) {
+          return w;
+        } else if (currentTime.isSame(moment("03:00", "HH:mm"))) {
+          return w;
+        } else if (currentTime.isSame(moment("12:00", "HH:mm"))) {
+          return w;
+        } else if (currentTime.isSame(moment("18:00", "HH:mm"))) {
+          return w;
+        } else if (currentTime.isSame(moment("06:00", "HH:mm"))) {
+          return w;
+        } else if (currentTime.isSame(moment("21:00", "HH:mm"))) {
+          return w;
+        }
+      });
+      return data;
+    } catch (error) {
+      return [];
     }
   };
 
-  getNewListForescast();
+  const checkWeatherDays = () => {
+    const listDays = getNewListForescast();
+
+    if (listDays.length === 0) {
+      return (
+        <Box
+          sx={{
+            display: "flex",
+            textAlign: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Typography variant="h2" fontWeight={800} textAlign={"center"}>
+            No hay datos para mostrar
+          </Typography>
+        </Box>
+      );
+    } else {
+      return getNewListForescast().map((w: ForecastData) => {
+        return <TodaysInformationPanel currentForecast={w} />;
+      });
+    }
+  };
 
   return (
     <>
@@ -256,9 +278,7 @@ export const DayInformationPanel = (props: DayInformationPanelProps) => {
               display: "flex",
             }}
           >
-            {/* {[].map((d: any) => {
-              return <TodaysInformationPanel currentForecast={null} />;
-            })} */}
+            {checkWeatherDays()}
           </Grid>
           <Grid
             item

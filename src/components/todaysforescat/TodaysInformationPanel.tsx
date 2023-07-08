@@ -1,54 +1,42 @@
-import React from "react";
-import { WeatherData } from "../weather/weatherInfo";
-
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Rain from "../dayInformation/Rain";
 import Sunny from "../dayInformation/Sunny";
 import Cloudy from "../dayInformation/Cloudy";
 import { ForecastData } from "./forecastInfo";
+import moment from "moment";
 
 interface TodaysInformationPanelProps {
-  currentForecast: ForecastData | null;
+  currentForecast: ForecastData;
 }
 export const TodaysInformationPanel = (props: TodaysInformationPanelProps) => {
-  //const { currentForecast } = props;
+  const { currentForecast } = props;
   const convertCelsius = () => {
     try {
-      // const gradesFahrenheit = currentForecast.main.temp;
-      //  let celsius = gradesFahrenheit - 273.15;
-      // const result = celsius.toFixed(0);
-      return 0;
+      const gradesFahrenheit = currentForecast.main.temp;
+      let celsius = gradesFahrenheit - 273.15;
+      const result = celsius.toFixed(0);
+      return result;
     } catch (error) {
       return `0°`;
     }
   };
   const getHours = (): string => {
-    const hours = [
-      "6:00 AM",
-      "9:00 AM",
-      "12:00 PM",
-      "3:00 PM",
-      "6:00 PM",
-      "9:00 PM",
-    ];
-    const currentDayIndex = new Date().getDay();
-    return hours[currentDayIndex];
+    return moment(currentForecast.dt_txt).format("LT");
   };
   const getWeatherSVG = (): JSX.Element => {
-    //const weatherType = currentForecast.weather[0].main.toLowerCase();
+    const weatherType = currentForecast.weather[0].main.toLowerCase();
 
-    // switch (weatherType) {
-    //   case "rain":
-    //     return <Rain width="200px" height="auto" />;
-    //   case "sunny":
-    //     return <Sunny width="200px" height="auto" />;
-    //   case "clouds":
-    //     return <Cloudy width="200px" height="auto" />;
-    //   default:
-    //     return <Sunny width="200px" height="auto" />;
-    // }
-    return <></>;
+    switch (weatherType) {
+      case "rain":
+        return <Rain width="200px" height="auto" />;
+      case "sunny":
+        return <Sunny width="200px" height="auto" />;
+      case "clouds":
+        return <Cloudy width="200px" height="auto" />;
+      default:
+        return <Sunny width="200px" height="auto" />;
+    }
   };
 
   const hours = getHours();
