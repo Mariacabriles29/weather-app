@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -56,6 +56,7 @@ export const WeatherPanel = () => {
         height: "100%",
         display: "flex",
         flexDirection: "column",
+        overflow: "hidden",
       }}
     >
       <Header />
@@ -67,10 +68,12 @@ export const WeatherPanel = () => {
           sx={{
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
+            alignItems: "flex-start",
           }}
         >
-          <SliderPanel />
+          <Box sx={{ width: "80%", height: "max-content", minHeight: "500px" }}>
+            <SliderPanel />
+          </Box>
         </Grid>
         <Grid item xs={12} md={6}>
           <DayInformationPanel
@@ -86,14 +89,37 @@ export const WeatherPanel = () => {
           xs={12}
           md={3}
           sx={{
-            backgroundColor: "#eaecef",
-            width: "100%",
             borderRadius: "10px",
+            display: "flex",
+            justifyContent: "center",
           }}
         >
-          {getNewListForecastDays().map((we: ForecastData) => {
-            return <DayForecastPanel currentForecast={we} />;
-          })}
+          <Box
+            sx={{
+              width: "80%",
+              height: "max-content",
+              minHeight: "500px",
+              display: "flex",
+              flexDirection: "column",
+
+              backgroundColor: "#eaecef",
+              boxShadow:
+                "rgb(145 158 171 / 20%) 0px 0px 6px 0px, rgb(145 158 171 / 12%) 0px 12px 24px -4px",
+              padding: "0 16px",
+              marginLeft: "23px",
+            }}
+          >
+            <Typography
+              variant="h1"
+              component="h2"
+              sx={{ fontSize: "1.5rem", padding: "8px", marginTop: "1rem" }}
+            >
+              5-DAYS FORECAST
+            </Typography>
+            {getNewListForecastDays().map((we: ForecastData) => {
+              return <DayForecastPanel currentForecast={we} />;
+            })}
+          </Box>
         </Grid>
       </Grid>
 

@@ -31,15 +31,31 @@ export const DayForecastPanel = (props: DayForecastPanelProps) => {
 
     switch (weatherType) {
       case "rain":
-        return <Rain width="80px" height="auto" marginTop="2rem" />;
+        return <Rain width="auto" height="45px" marginTop="2rem" />;
       case "sunny":
-        return <Sunny width="80px" height="auto" marginTop="2rem" />;
+        return <Sunny width="auto" height="45px" marginTop="2rem" />;
       case "clouds":
-        return <Cloudy width="80px" height="auto" marginTop="2rem" />;
+        return <Cloudy width="auto" height="45px" marginTop="2rem" />;
       default:
-        return <Sunny width="80px" height="auto" marginTop="2rem" />;
+        return <Sunny width="auto" height="45px" marginTop="2rem" />;
     }
   };
+  const getWeatherName = (): string => {
+    const weatherType = currentForecast.weather[0].main.toLowerCase();
+
+    switch (weatherType) {
+      case "rain":
+        return "Lluvia";
+      case "sunny":
+        return "Soleado";
+      case "clouds":
+        return "Nublado";
+      default:
+        return "Soleado";
+    }
+  };
+
+  const weatherName = getWeatherName();
 
   const days = getDays();
   const weatherSvg = getWeatherSVG();
@@ -48,17 +64,21 @@ export const DayForecastPanel = (props: DayForecastPanelProps) => {
     <Box
       sx={{
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "space-around",
         alignItems: "center",
+        boxShadow:
+          "rgb(145 158 171 / 20%) 0px 0px 6px 0px, rgb(145 158 171 / 12%) 0px 12px 24px -4px",
       }}
     >
-      <Typography variant="h2" fontWeight="800" fontSize={"1.2rem"}>
+      <Typography variant="h2" fontWeight="800" fontSize={"1rem"}>
         {days}
       </Typography>
-
       <Typography>{weatherSvg}</Typography>
-      <Typography variant="h2" fontWeight="800" fontSize={"1.2rem"}>
-        {convertCelsius(currentForecast.main.temp_max)} /{" "}
+      <Typography variant="h2" fontWeight="800" fontSize={"1rem"}>
+        {weatherName}
+      </Typography>
+      <Typography variant="h2" fontWeight="800" fontSize={"1rem"}>
+        {convertCelsius(currentForecast.main.temp_max)} /
         {convertCelsius(currentForecast.main.temp_min)}
       </Typography>
     </Box>

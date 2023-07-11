@@ -29,13 +29,13 @@ export const TodaysInformationPanel = (props: TodaysInformationPanelProps) => {
 
     switch (weatherType) {
       case "rain":
-        return <Rain width="200px" height="auto" />;
+        return <Rain width="auto" height="45px" />;
       case "sunny":
-        return <Sunny width="200px" height="auto" />;
+        return <Sunny width="auto" height="45px" />;
       case "clouds":
-        return <Cloudy width="200px" height="auto" />;
+        return <Cloudy width="auto" height="45px" />;
       default:
-        return <Sunny width="200px" height="auto" />;
+        return <Sunny width="auto" height="45px" />;
     }
   };
 
@@ -50,16 +50,17 @@ export const TodaysInformationPanel = (props: TodaysInformationPanelProps) => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          boxShadow:
+            "rgb(145 158 171 / 20%) 0px 0px 6px 0px, rgb(145 158 171 / 12%) 0px 12px 24px -4px",
         }}
       >
-        <Typography variant="h2" fontWeight="800" mt="2rem">
+        <Typography variant="h2" fontWeight="800" fontSize={"1rem"}>
           {hours}
         </Typography>
-
-        <Typography variant="h2" fontWeight="800" mt="2rem">
+        <Typography variant="h2" fontWeight="800">
           {weatherSVG}
         </Typography>
-        <Typography variant="h2" fontWeight={"800"} mt={"2rem"}>
+        <Typography variant="h2" fontWeight={"800"} fontSize={"1rem"}>
           {convertCelsius()}°
         </Typography>
       </Box>

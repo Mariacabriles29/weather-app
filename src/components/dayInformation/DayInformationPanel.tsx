@@ -25,6 +25,8 @@ import { getForecast } from "../../store/acctions/forecastAccions";
 import { TodaysInformationPanel } from "../todaysforescat/TodaysInformationPanel";
 import moment from "moment";
 import { ForecastData, ListForecast } from "../todaysforescat/forecastInfo";
+import { getWeather } from "../../store/acctions/weatherAccions";
+import { WeatherConditionsPanel } from "../weatherconditions/WeatherConditionsPanel";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -77,12 +79,19 @@ export const DayInformationPanel = (props: DayInformationPanelProps) => {
   const ListForecast: ListForecast = useSelector((state: any) => {
     return state.forecast.currentForecast;
   });
+  const weather = useSelector((state: any) => {
+    return state.weather.currentWeather;
+  });
   const { currentWeather, handleSearchTerm } = props;
   const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getForecast() as any);
+  }, []);
+
+  useEffect(() => {
+    dispatch(getWeather() as any);
   }, []);
 
   const convertCelsius = () => {
@@ -97,13 +106,13 @@ export const DayInformationPanel = (props: DayInformationPanelProps) => {
   };
   const checkWeather = () => {
     if (currentWeather.weather[0].main.toLowerCase() === "rain") {
-      return <Rain width="200px" height="auto" />;
+      return <Rain width="120px" height="auto" />;
     } else if (currentWeather.weather[0].main.toLowerCase() === "sunny") {
-      return <Sunny width="200px" height="auto" />;
+      return <Sunny width="120px" height="auto" />;
     } else if (currentWeather.weather[0].main.toLowerCase() === "clouds") {
-      return <Cloudy width="200px" height="auto" />;
+      return <Cloudy width="120px" height="auto" />;
     } else {
-      return <Sunny width="200px" height="auto" />;
+      return <Sunny width="120px" height="auto" />;
     }
   };
 
@@ -123,6 +132,8 @@ export const DayInformationPanel = (props: DayInformationPanelProps) => {
           return w;
         } else if (currentTime.isSame(moment("21:00", "HH:mm"))) {
           return w;
+        } else if (currentTime.isSame(moment("00:00", "HH:mm"))) {
+          return w;
         }
       });
       return data;
@@ -141,9 +152,13 @@ export const DayInformationPanel = (props: DayInformationPanelProps) => {
             display: "flex",
             textAlign: "center",
             justifyContent: "center",
+            width: "100%",
+            paddingBottom: "16px",
+            paddingTop: "16px",
+            margin: "2rem",
           }}
         >
-          <Typography variant="h2" fontWeight={800} textAlign={"center"}>
+          <Typography variant="h2" fontWeight={800} fontSize={"2rem"}>
             No hay datos para mostrar
           </Typography>
         </Box>
@@ -207,6 +222,7 @@ export const DayInformationPanel = (props: DayInformationPanelProps) => {
             md={12}
             sx={{
               height: "100%",
+              width: "100%",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -221,7 +237,14 @@ export const DayInformationPanel = (props: DayInformationPanelProps) => {
                   height: "100%",
                 }}
               >
-                <Grid container>
+                <Grid
+                  container
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    width: "100%",
+                  }}
+                >
                   <Grid
                     item
                     xs={12}
@@ -253,8 +276,8 @@ export const DayInformationPanel = (props: DayInformationPanelProps) => {
                     md={6}
                     sx={{
                       display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start",
+                      justifyContent: "center",
+                      alignItems: "center",
                       flexDirection: "column",
                       height: "100%",
                     }}
@@ -265,6 +288,42 @@ export const DayInformationPanel = (props: DayInformationPanelProps) => {
               </CardContent>
             </Card>
           </Grid>
+          <Box
+            sx={{
+              backgroundColor: "#eaecef",
+              width: "100%",
+              borderRadius: "10px",
+              display: "flex",
+              textAlign: "center",
+              justifyContent: "center",
+              paddingBottom: "16px",
+              paddingTop: "16px",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <Typography variant="h2" fontWeight={800} fontSize={"1rem"}>
+              TODAY'S FORECAST
+            </Typography>
+            <Grid
+              item
+              xs={12}
+              md={12}
+              sx={{
+                width: "100%",
+
+                height: "100%",
+                marginTop: "2rem",
+                display: "flex",
+                justifyContent: "space-around",
+                paddingBottom: "16px",
+                paddingTop: "16px",
+              }}
+            >
+              {checkWeatherDays()}
+            </Grid>
+          </Box>
+
           <Grid
             item
             xs={12}
@@ -278,22 +337,7 @@ export const DayInformationPanel = (props: DayInformationPanelProps) => {
               display: "flex",
             }}
           >
-            {checkWeatherDays()}
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            md={12}
-            sx={{
-              backgroundColor: "#eaecef",
-              width: "100%",
-              borderRadius: "10px",
-              height: "100%",
-              marginTop: "2rem",
-              display: "flex",
-            }}
-          >
-            kjhgf
+            <WeatherConditionsPanel currentWeather={weather} />
           </Grid>
         </Grid>
       )}

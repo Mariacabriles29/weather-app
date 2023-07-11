@@ -16,7 +16,13 @@ export const SliderPanel = () => {
       <Grid item xs={12} md={4}></Grid>
       <Grid item xs={12} md={6}>
         <Card
-          sx={{ minHeight: "600px", backgroundColor: "#eaecef", width: "100%" }}
+          sx={{
+            justifyContent: "space-around",
+            alignItems: "center",
+            backgroundColor: "#eaecef",
+            // height: "max-content",
+            // minHeight: "500px",
+          }}
         >
           <CardContent>
             <Box
@@ -43,7 +49,7 @@ export const SliderPanel = () => {
             <Typography
               variant="h6"
               component="h3"
-              sx={{ textAlign: "center", fontWeight: "800" }}
+              sx={{ textAlign: "center", fontWeight: "800", fontSize: "1rem" }}
             >
               Weather
             </Typography>
@@ -60,7 +66,7 @@ export const SliderPanel = () => {
             <Typography
               variant="h6"
               component="h3"
-              sx={{ textAlign: "center", fontWeight: "400" }}
+              sx={{ textAlign: "center", fontWeight: "400", fontSize: "1rem" }}
             >
               Cities
             </Typography>
@@ -77,7 +83,7 @@ export const SliderPanel = () => {
             <Typography
               variant="h6"
               component="h3"
-              sx={{ textAlign: "center", fontWeight: "400" }}
+              sx={{ textAlign: "center", fontWeight: "400", fontSize: "1rem" }}
             >
               Map
             </Typography>
@@ -94,7 +100,7 @@ export const SliderPanel = () => {
             <Typography
               variant="h6"
               component="h3"
-              sx={{ textAlign: "center", fontWeight: "400" }}
+              sx={{ textAlign: "center", fontWeight: "400", fontSize: "1rem" }}
             >
               Settings
             </Typography>
